@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Reddit wallpaper manager</string>
+    <string name="change_wallpaper">Change wallpaper</string>
+    <string name="downloading">Downloading data...</string>
+    <string name="wallpaper">Setting wallpaper...</string>
+    <string name="VerticalWallpapers">VerticalWallpapers</string>
+</resources>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/anotherOne"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="5dp"
+        android:enabled="false"
+        android:onClick="onSaveToInternalStorageClick"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="@+id/changeWallpaper"
+        app:layout_constraintEnd_toStartOf="@+id/changeWallpaper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/changeWallpaper" />
+
+    <EditText
+        android:id="@+id/subreddit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/VerticalWallpapers"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/check"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="Subreddit:"
+        app:layout_constraintStart_toStartOf="@+id/subreddit"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:onClick="onLoadClick"
+        android:text="Load"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subreddit"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/VerticalImages"
+        android:layout_width="178dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:checked="true"
+        android:text="Vertical images only"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subreddit" />
+
+    <ImageView
+        android:id="@+id/imgview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="74dp"
+        android:clickable="true"
+        android:onClick="onImageViewClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/VerticalImages"
+        app:srcCompat="@android:color/transparent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginBottom="6dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgview"
+        app:layout_constraintStart_toStartOf="@+id/changeWallpaper" />
+
+    <Button
+        android:id="@+id/changeWallpaper"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:enabled="false"
+        android:onClick="onSetWallpaperClick"
+        android:text="Set"
+        app:layout_constraintBaseline_toBaselineOf="@+id/random"
+        app:layout_constraintEnd_toStartOf="@+id/random"
+        app:layout_constraintStart_toEndOf="@+id/anotherOne" />
+
+    <Button
+        android:id="@+id/random"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="9dp"
+        android:enabled="false"
+        android:onClick="onSetRandomWallpaperClick"
+        android:text="random"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/changeWallpaper"
+        app:layout_constraintTop_toBottomOf="@+id/imgview" />
+
+</android.support.constraint.ConstraintLayout>
