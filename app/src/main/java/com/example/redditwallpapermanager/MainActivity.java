@@ -36,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> urls;
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Context cntxt = this;
     private ContextWrapper cw;
     private Integer CurrentIndex = 0;
-    private Integer imageNum = 0;
+    private Boolean isFavourites = false;
     private Bitmap currentWallpaper;
     private String favPath;
 
@@ -116,6 +117,36 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.fav:
+                ArrayList temp;
+                temp = images;
+                images = SaveData.getInstance().loadImageFromStorage(favPath,this);
+                if (images.isEmpty()) {
+                    showToast("No favourite images.");
+                    images = temp;
+                }
+                else{
+                    isFavourites = true;
+                    imgview.setImageBitmap(images.get(0));
+                    changeWallpaper.setEnabled(true);
+                    random.setEnabled(true);
+                    showToast("images loaded:" + images.size());
+                }
+                break;
+            case  R.id.delete_fav:
+                SaveData.getInstance().deleteSharedPref(this);
+                if (isFavourites){
+                    imgview.setImageResource(android.R.color.transparent);
+                    images.clear();
+                }
+                showToast("Favourites deleted");
+
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -127,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onImageViewClick(View view){
+        if (images.isEmpty()) return;
         CurrentIndex += 1;
         if (CurrentIndex >= images.size()) CurrentIndex = 0;
         imgview.setImageBitmap(images.get(CurrentIndex));
@@ -136,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     public void onLoadClick(View view){
         if (!images.isEmpty()) images.clear();
+        isFavourites = false;
         if (!ParseContent.getInstance().isNetworkAvailable(this)){
             showToast("No connection");
             return;

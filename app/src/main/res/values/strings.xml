@@ -5,4 +5,5 @@
     <string name="wallpaper">Setting wallpaper...</string>
     <string name="VerticalWallpapers">VerticalWallpapers</string>
     <string name="Load_favourites">Load favourites</string>
+    <string name="delete_fav">Delete favourites</string>
 </resources>
