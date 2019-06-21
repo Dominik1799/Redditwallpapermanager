@@ -4,4 +4,5 @@
     <string name="downloading">Downloading data...</string>
     <string name="wallpaper">Setting wallpaper...</string>
     <string name="VerticalWallpapers">VerticalWallpapers</string>
+    <string name="Load_favourites">Load favourites</string>
 </resources>

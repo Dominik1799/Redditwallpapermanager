@@ -9,6 +9,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <include
+        layout="@layout/action_bar"
+        android:id="@+id/appBar">
+
+    </include>
+
     <Button
         android:id="@+id/anotherOne"
         android:layout_width="0dp"
@@ -40,7 +46,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="80dp"
         android:text="Subreddit:"
         app:layout_constraintStart_toStartOf="@+id/subreddit"
         app:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +69,7 @@
         android:layout_marginTop="12dp"
         android:checked="true"
         android:text="Vertical images only"
+        android:buttonTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subreddit" />
 
@@ -89,6 +96,8 @@
         android:layout_marginStart="35dp"
         android:layout_marginBottom="6dp"
         android:visibility="invisible"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_in"
         app:layout_constraintBottom_toBottomOf="@+id/imgview"
         app:layout_constraintStart_toStartOf="@+id/changeWallpaper" />
 
