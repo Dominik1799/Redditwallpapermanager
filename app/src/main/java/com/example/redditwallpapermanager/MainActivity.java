@@ -1,6 +1,7 @@
 package com.example.redditwallpapermanager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -12,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,10 +57,16 @@ public class MainActivity extends AppCompatActivity {
     private Boolean isFavourites = false;
     private Bitmap currentWallpaper;
     private String favPath;
+    private View view;
+    private Activity activity = null;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.activity_main);
         android.support.v7.widget.Toolbar toolbar =findViewById(R.id.appBar);
         setSupportActionBar(toolbar);
@@ -70,9 +79,52 @@ public class MainActivity extends AppCompatActivity {
         VerticalImages = findViewById(R.id.VerticalImages);
         cw = new ContextWrapper(getApplicationContext());
         favPath = cw.getDir("imageDir",MODE_PRIVATE).getAbsolutePath();
-        //uncomment this next line to delete current favourite images
+        imgview.setOnTouchListener(new OnSwipeTouchListener(this){
+            public void onSwipeRight(){
+                if (images.isEmpty()) return;
+                CurrentIndex -= 1;
+                if (CurrentIndex < 0) CurrentIndex = images.size()-1;
+                imgview.setImageBitmap(images.get(CurrentIndex));
+                currentWallpaper = images.get(CurrentIndex);
+            }
+            public void onSwipeLeft(){
+                if (images.isEmpty()) return;
+                CurrentIndex += 1;
+                if (CurrentIndex >= images.size()) CurrentIndex = 0;
+                imgview.setImageBitmap(images.get(CurrentIndex));
+                currentWallpaper = images.get(CurrentIndex);
+            }
+
+        });
+
+        registerForContextMenu(imgview);
+//        uncomment this next line to delete current favourite images
 //        SaveData.getInstance().deleteSharedPref(this);
     }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.save:
+                onSaveToInternalStorageClick(view);
+                break;
+            case R.id.set:
+                onSetWallpaperClick(view);
+                break;
+
+
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context,menu);
+    }
+
+
 
 
     public void onSetRandomWallpaperClick(final View view){
@@ -114,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         });
         alpha.start();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
