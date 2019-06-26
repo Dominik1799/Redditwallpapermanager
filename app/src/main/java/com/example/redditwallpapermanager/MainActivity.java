@@ -57,11 +57,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText sub;
     private Context cntxt = this;
     private ContextWrapper cw;
-    private Integer CurrentIndex = 0;
     private Boolean isFavourites = false;
     private Bitmap currentWallpaper;
     private String favPath;
-    private View view;
     private Activity activity = null;
 
 
@@ -86,24 +84,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         MyAdapter myAdapter = new MyAdapter(this,images);
         viewPager.setAdapter(myAdapter);
-//        imgview.setOnTouchListener(new OnSwipeTouchListener(this){
-//            public void onSwipeRight(){
-//                if (images.isEmpty()) return;
-//                CurrentIndex -= 1;
-//                if (CurrentIndex < 0) CurrentIndex = images.size()-1;
-//                imgview.setImageBitmap(images.get(CurrentIndex));
-//                currentWallpaper = images.get(CurrentIndex);
-//            }
-//            public void onSwipeLeft(){
-//                if (images.isEmpty()) return;
-//                CurrentIndex += 1;
-//                if (CurrentIndex >= images.size()) CurrentIndex = 0;
-//                imgview.setImageBitmap(images.get(CurrentIndex));
-//                currentWallpaper = images.get(CurrentIndex);
-//            }
-//
-//        });
-
 //        registerForContextMenu(imgview);
 //        uncomment this next line to delete current favourite images
 //        SaveData.getInstance().deleteSharedPref(this);
@@ -136,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSetRandomWallpaperClick(final View view){
         final int randomNum = new Random().nextInt(images.size());
-//        imgview.setImageBitmap(images.get(randomNum));
         currentWallpaper = images.get(randomNum);
+        viewPager.setCurrentItem(randomNum,false);
         Thread alpha = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -267,12 +247,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if (show){
                     progressBar.setVisibility(View.VISIBLE);
-//                    downloadingIndication.setVisibility(View.VISIBLE);
-//                    downloadingIndication.setText(text);
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
-//                    downloadingIndication.setVisibility(View.INVISIBLE);
-//                    downloadingIndication.setText(text);
                 }
             }
         });
