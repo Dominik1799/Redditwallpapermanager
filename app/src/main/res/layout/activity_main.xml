@@ -10,8 +10,8 @@
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/action_bar"
-        android:id="@+id/appBar">
+        android:id="@+id/appBar"
+        layout="@layout/action_bar">
 
     </include>
 
@@ -67,27 +67,34 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
+        android:buttonTint="@color/colorPrimary"
         android:checked="true"
         android:text="Vertical images only"
-        android:buttonTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subreddit" />
 
-    <ImageView
-        android:id="@+id/imgview"
+
+    <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
+        android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="75dp"
         android:layout_marginTop="75dp"
-        android:layout_marginEnd="75dp"
         android:layout_marginBottom="74dp"
-        android:clickable="true"
-        android:onClick="onImageViewClick"
+        app:icvp_center_page_scale_offset="30dp"
+        app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
+        app:icvp_max_page_scale="1"
+        app:icvp_medium_scaled="false"
+        app:icvp_min_page_scale="0.55"
+        app:icvp_min_page_scale_offset="0dp"
+        app:icvp_scroll_duration="250"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/VerticalImages"
-        app:srcCompat="@android:color/transparent" />
+
+
+        app:layout_constraintTop_toTopOf="@+id/VerticalImages">
+
+    </com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -95,10 +102,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginBottom="6dp"
-        android:visibility="invisible"
         android:indeterminateTint="@color/colorPrimary"
         android:indeterminateTintMode="src_in"
-        app:layout_constraintBottom_toBottomOf="@+id/imgview"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
         app:layout_constraintStart_toStartOf="@+id/changeWallpaper" />
 
     <Button
@@ -126,6 +133,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/changeWallpaper"
-        app:layout_constraintTop_toBottomOf="@+id/imgview" />
+        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
 </android.support.constraint.ConstraintLayout>

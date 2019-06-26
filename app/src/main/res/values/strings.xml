@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Reddit wallpaper manager</string>
-    <string name="change_wallpaper">Change wallpaper</string>
-    <string name="downloading">Downloading data...</string>
-    <string name="wallpaper">Setting wallpaper...</string>
     <string name="VerticalWallpapers">VerticalWallpapers</string>
     <string name="Load_favourites">Load favourites</string>
     <string name="delete_fav">Delete favourites</string>

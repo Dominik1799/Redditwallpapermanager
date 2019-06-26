@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
-
 public class HelpingTasks {
     private static final HelpingTasks ourInstance = new HelpingTasks();
 
