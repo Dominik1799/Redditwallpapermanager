@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         cw = new ContextWrapper(getApplicationContext());
         favPath = cw.getDir("imageDir",MODE_PRIVATE).getAbsolutePath();
         viewPager = findViewById(R.id.view_pager);
-        MyAdapter myAdapter = new MyAdapter(this,images);
-        viewPager.setAdapter(myAdapter);
+//        MyAdapter myAdapter = new MyAdapter(this,images);
+//        viewPager.setAdapter(myAdapter);
 //        registerForContextMenu(imgview);
 //        uncomment this next line to delete current favourite images
 //        SaveData.getInstance().deleteSharedPref(this);
@@ -107,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
                 try {
-                    showLoadingWallpaper("Setting wallpaper...",true);
+                    showLoadingWallpaper(true);
                     mngr.setBitmap(images.get(randomNum));
                     mngr.setWallpaperOffsets(view.getWindowToken(),0.5f,0.5f);
                     showToast("Wallpaper set!");
-                    showLoadingWallpaper("Downloading data...",false);
+                    showLoadingWallpaper(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -126,10 +126,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
                 try {
-                    showLoadingWallpaper("Setting wallpaper...",true);
+                    showLoadingWallpaper(true);
                     mngr.setBitmap(images.get(viewPager.getRealItem()));
                     showToast("Wallpaper set!");
-                    showLoadingWallpaper("Downloading data...",false);
+                    showLoadingWallpaper(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -153,8 +153,13 @@ public class MainActivity extends AppCompatActivity {
                     images = temp;
                 }
                 else{
+                    //TODO: treba prerobit oblubene. nefunguje to lebo este neviem oboznamit dataset o zmene.
+                    //napady ako na to:
+                    //  -vytvor funkciu kde len passnes obrazky a zase to resetuje adapter aj view_pager
+                    //tuto funckiu sa da zavolat aj po nacitani novych obrazkov
+                    viewPager.notifyDataSetChanged();
                     isFavourites = true;
-                    imgview.setImageBitmap(images.get(0));
+//                    imgview.setImageBitmap(images.get(0));
                     changeWallpaper.setEnabled(true);
                     random.setEnabled(true);
                     showToast("images loaded:" + images.size());
@@ -225,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void showLoadingWallpaper(final String text,final boolean show){
+    public void showLoadingWallpaper(final boolean show){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -245,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         Thread alpha = new Thread(new Runnable() {
             @Override
             public void run() {
-                SaveData.getInstance().saveToInternalStorage(currentWallpaper,cw,cntxt);
+                SaveData.getInstance().saveToInternalStorage(images.get(viewPager.getRealItem()),cw,cntxt);
                 showToast("Saved");
             }
         });
@@ -283,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            showLoadingWallpaper("Downloading data...",true);
+            showLoadingWallpaper(true);
         }
 
         @Override
@@ -293,7 +298,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            showLoadingWallpaper("Downloading data...",false);
+            imagesShown.clear();
+            showLoadingWallpaper(false);
             if ((images.isEmpty())){
                 showToast("Invalid subreddit");
                 return;
@@ -306,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
             anotherOne.setEnabled(true);
             showToast("Images loaded successfully");
             MyAdapter myAdapter = new MyAdapter(mContext,imagesShown);
+//            viewPager.notifyDataSetChanged();
             viewPager.setAdapter(myAdapter);
             currentWallpaper = images.get(0);
         }
