@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     images = temp;
                 }
                 else{
+                    anotherOne.setEnabled(false);
                     setNewImages(this,images);
                     isFavourites = true;
                     changeWallpaper.setEnabled(true);
@@ -257,8 +258,10 @@ public class MainActivity extends AppCompatActivity {
         Thread alpha = new Thread(new Runnable() {
             @Override
             public void run() {
+                showLoadingWallpaper(true);
                 SaveData.getInstance().saveToInternalStorage(images.get(viewPager.getRealItem()),cw,cntxt);
                 showToast("Saved");
+                showLoadingWallpaper(false);
             }
         });
         alpha.start();

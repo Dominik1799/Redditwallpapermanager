@@ -23,7 +23,7 @@
         android:layout_marginEnd="5dp"
         android:enabled="false"
         android:onClick="onSaveToInternalStorageClick"
-        android:text="Save"
+        android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="@+id/changeWallpaper"
         app:layout_constraintEnd_toStartOf="@+id/changeWallpaper"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,14 +41,15 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/check"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="Subreddit:"
+        android:text="@string/subreddit"
         app:layout_constraintStart_toStartOf="@+id/subreddit"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
         android:onClick="onLoadClick"
-        android:text="Load"
+        android:text="@string/load"
         app:layout_constraintBaseline_toBaselineOf="@+id/subreddit"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -70,7 +71,7 @@
         android:layout_marginTop="12dp"
         android:buttonTint="@color/colorPrimary"
         android:checked="true"
-        android:text="Vertical images only"
+        android:text="@string/vertical_images_only"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subreddit" />
 
@@ -116,7 +117,7 @@
         android:layout_marginEnd="2dp"
         android:enabled="false"
         android:onClick="onSetWallpaperClick"
-        android:text="Set"
+        android:text="@string/set"
         app:layout_constraintBaseline_toBaselineOf="@+id/random"
         app:layout_constraintEnd_toStartOf="@+id/random"
         app:layout_constraintStart_toEndOf="@+id/anotherOne" />
@@ -130,7 +131,7 @@
         android:layout_marginBottom="9dp"
         android:enabled="false"
         android:onClick="onSetRandomWallpaperClick"
-        android:text="random"
+        android:text="@string/random"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/changeWallpaper"

@@ -3,4 +3,10 @@
     <string name="VerticalWallpapers">VerticalWallpapers</string>
     <string name="Load_favourites">Load favourites</string>
     <string name="delete_fav">Delete favourites</string>
+    <string name="vertical_images_only">Vertical images only</string>
+    <string name="load">Load</string>
+    <string name="subreddit">Subreddit:</string>
+    <string name="save">Save</string>
+    <string name="set">Set</string>
+    <string name="random">random</string>
 </resources>
