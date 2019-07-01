@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.fav:
+                showLoadingWallpaper(true);
                 ArrayList temp;
                 temp = images;
                 images = SaveData.getInstance().loadImageFromStorage(favPath,this);
@@ -153,26 +154,22 @@ public class MainActivity extends AppCompatActivity {
                     images = temp;
                 }
                 else{
-                    //TODO: treba prerobit oblubene. nefunguje to lebo este neviem oboznamit dataset o zmene.
-                    //napady ako na to:
-                    //  -vytvor funkciu kde len passnes obrazky a zase to resetuje adapter aj view_pager
-                    //tuto funckiu sa da zavolat aj po nacitani novych obrazkov
-                    viewPager.notifyDataSetChanged();
+                    setNewImages(this,images);
                     isFavourites = true;
-//                    imgview.setImageBitmap(images.get(0));
                     changeWallpaper.setEnabled(true);
                     random.setEnabled(true);
                     showToast("images loaded:" + images.size());
                 }
+                showLoadingWallpaper(false);
                 break;
             case  R.id.delete_fav:
+                showLoadingWallpaper(true);
                 SaveData.getInstance().deleteSharedPref(this);
-                if (isFavourites){
-                    imgview.setImageResource(android.R.color.transparent);
-                    images.clear();
-                }
+//                if (isFavourites){
+//                    images.clear();
+//                }
                 showToast("Favourites deleted");
-
+                showLoadingWallpaper(false);
                 break;
         }
 
@@ -217,6 +214,16 @@ public class MainActivity extends AppCompatActivity {
         if (sub.getText().toString().matches("")) subreddit = "https://www.reddit.com/r/verticalwallpapers/.rss";
         new MyTask(cntxt).execute();
         sub.onEditorAction(EditorInfo.IME_ACTION_DONE);
+    }
+
+    public void setNewImages(Context context,ArrayList<Bitmap> images){
+        imagesShown.clear();
+        for (Bitmap img : images){
+            imagesShown.add(Bitmap.createScaledBitmap(img,(int)(img.getWidth()*0.6), (int)(img.getHeight()*0.6), true));
+        }
+        MyAdapter myAdapter = new MyAdapter(context,imagesShown);
+        viewPager.setAdapter(myAdapter);
+
     }
 
 
@@ -304,16 +311,11 @@ public class MainActivity extends AppCompatActivity {
                 showToast("Invalid subreddit");
                 return;
             }
-            for (Bitmap img : images){
-                imagesShown.add(Bitmap.createScaledBitmap(img,(int)(img.getWidth()*0.8), (int)(img.getHeight()*0.8), true));
-            }
             changeWallpaper.setEnabled(true);
             random.setEnabled(true);
             anotherOne.setEnabled(true);
             showToast("Images loaded successfully");
-            MyAdapter myAdapter = new MyAdapter(mContext,imagesShown);
-//            viewPager.notifyDataSetChanged();
-            viewPager.setAdapter(myAdapter);
+            setNewImages(mContext,images);
             currentWallpaper = images.get(0);
         }
     }

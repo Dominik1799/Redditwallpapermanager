@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/imageItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clickable="true"
         android:onClick="onImageViewClick"
         app:layout_constraintBottom_toBottomOf="parent"
