@@ -145,23 +145,24 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.fav:
-                showLoadingWallpaper(true);
-                ArrayList temp;
-                temp = images;
-                images = SaveData.getInstance().loadImageFromStorage(favPath,this);
-                if (images.isEmpty()) {
-                    showToast("No favourite images.");
-                    images = temp;
-                }
-                else{
-                    anotherOne.setEnabled(false);
-                    setNewImages(this,images);
-                    isFavourites = true;
-                    changeWallpaper.setEnabled(true);
-                    random.setEnabled(true);
-                    showToast("images loaded:" + images.size());
-                }
-                showLoadingWallpaper(false);
+                loadFavourites(this);
+//                showLoadingWallpaper(true);
+//                ArrayList temp;
+//                temp = images;
+//                images = SaveData.getInstance().loadImageFromStorage(favPath,this);
+//                if (images.isEmpty()) {
+//                    showToast("No favourite images.");
+//                    images = temp;
+//                }
+//                else{
+//                    anotherOne.setEnabled(false);
+//                    setNewImages(this,images);
+//                    isFavourites = true;
+//                    changeWallpaper.setEnabled(true);
+//                    random.setEnabled(true);
+//                    showToast("images loaded:" + images.size());
+//                }
+//                showLoadingWallpaper(false);
                 break;
             case  R.id.delete_fav:
                 showLoadingWallpaper(true);
@@ -175,6 +176,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void loadFavourites(final Context context){
+        new Thread(new Runnable() {
+            public void run() {
+                showLoadingWallpaper(true);
+                ArrayList temp;
+                temp = images;
+                images.clear();
+                images = SaveData.getInstance().loadImageFromStorage(favPath,context);
+                if (images.isEmpty()) {
+                    showToast("No favourite images.");
+                    images = temp;
+                }
+                else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setNewImages(context,images);
+                            anotherOne.setEnabled(false);
+                            changeWallpaper.setEnabled(true);
+                            random.setEnabled(true);
+                        }
+                    });
+                    isFavourites = true;
+                    showToast("images loaded:" + images.size());
+                }
+                showLoadingWallpaper(false);
+            }
+        }).start();
+
     }
 
     @Override
