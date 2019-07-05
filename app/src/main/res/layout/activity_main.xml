@@ -10,8 +10,8 @@
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/action_bar"
-        android:id="@+id/appBar">
+        android:id="@+id/appBar"
+        layout="@layout/action_bar">
 
     </include>
 
@@ -23,7 +23,7 @@
         android:layout_marginEnd="5dp"
         android:enabled="false"
         android:onClick="onSaveToInternalStorageClick"
-        android:text="Save"
+        android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="@+id/changeWallpaper"
         app:layout_constraintEnd_toStartOf="@+id/changeWallpaper"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,18 +36,20 @@
         android:layout_marginStart="13dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:backgroundTint="@color/colorPrimary"
         android:hint="@string/VerticalWallpapers"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/check"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="Subreddit:"
+        android:text="@string/subreddit"
         app:layout_constraintStart_toStartOf="@+id/subreddit"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
         android:onClick="onLoadClick"
-        android:text="Load"
+        android:text="@string/load"
         app:layout_constraintBaseline_toBaselineOf="@+id/subreddit"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -67,27 +69,34 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:checked="true"
-        android:text="Vertical images only"
         android:buttonTint="@color/colorPrimary"
+        android:checked="true"
+        android:text="@string/vertical_images_only"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subreddit" />
 
-    <ImageView
-        android:id="@+id/imgview"
+
+    <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
+        android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="75dp"
         android:layout_marginTop="75dp"
-        android:layout_marginEnd="75dp"
         android:layout_marginBottom="74dp"
-        android:clickable="true"
-        android:onClick="onImageViewClick"
+        app:icvp_center_page_scale_offset="30dp"
+        app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
+        app:icvp_max_page_scale="1"
+        app:icvp_medium_scaled="true"
+        app:icvp_min_page_scale="0.8"
+        app:icvp_min_page_scale_offset="-180dp"
+        app:icvp_scroll_duration="250"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/VerticalImages"
-        app:srcCompat="@android:color/transparent" />
+
+
+        app:layout_constraintTop_toTopOf="@+id/VerticalImages">
+
+    </com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -95,10 +104,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginBottom="6dp"
-        android:visibility="invisible"
         android:indeterminateTint="@color/colorPrimary"
         android:indeterminateTintMode="src_in"
-        app:layout_constraintBottom_toBottomOf="@+id/imgview"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
         app:layout_constraintStart_toStartOf="@+id/changeWallpaper" />
 
     <Button
@@ -108,7 +117,7 @@
         android:layout_marginEnd="2dp"
         android:enabled="false"
         android:onClick="onSetWallpaperClick"
-        android:text="Set"
+        android:text="@string/set"
         app:layout_constraintBaseline_toBaselineOf="@+id/random"
         app:layout_constraintEnd_toStartOf="@+id/random"
         app:layout_constraintStart_toEndOf="@+id/anotherOne" />
@@ -122,10 +131,10 @@
         android:layout_marginBottom="9dp"
         android:enabled="false"
         android:onClick="onSetRandomWallpaperClick"
-        android:text="random"
+        android:text="@string/random"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/changeWallpaper"
-        app:layout_constraintTop_toBottomOf="@+id/imgview" />
+        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
 </android.support.constraint.ConstraintLayout>

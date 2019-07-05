@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -67,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         cw = new ContextWrapper(getApplicationContext());
         favPath = cw.getDir("imageDir",MODE_PRIVATE).getAbsolutePath();
         viewPager = findViewById(R.id.view_pager);
-        MyAdapter myAdapter = new MyAdapter(this,images);
-        viewPager.setAdapter(myAdapter);
+//        MyAdapter myAdapter = new MyAdapter(this,images);
+//        viewPager.setAdapter(myAdapter);
 //        registerForContextMenu(imgview);
 //        uncomment this next line to delete current favourite images
 //        SaveData.getInstance().deleteSharedPref(this);
@@ -108,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
                 try {
-                    showLoadingWallpaper("Setting wallpaper...",true);
+                    showLoadingWallpaper(true);
                     mngr.setBitmap(images.get(randomNum));
                     mngr.setWallpaperOffsets(view.getWindowToken(),0.5f,0.5f);
                     showToast("Wallpaper set!");
-                    showLoadingWallpaper("Downloading data...",false);
+                    showLoadingWallpaper(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -127,10 +126,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
                 try {
-                    showLoadingWallpaper("Setting wallpaper...",true);
+                    showLoadingWallpaper(true);
                     mngr.setBitmap(images.get(viewPager.getRealItem()));
                     showToast("Wallpaper set!");
-                    showLoadingWallpaper("Downloading data...",false);
+                    showLoadingWallpaper(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -146,33 +145,68 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.fav:
+                loadFavourites(this);
+//                showLoadingWallpaper(true);
+//                ArrayList temp;
+//                temp = images;
+//                images = SaveData.getInstance().loadImageFromStorage(favPath,this);
+//                if (images.isEmpty()) {
+//                    showToast("No favourite images.");
+//                    images = temp;
+//                }
+//                else{
+//                    anotherOne.setEnabled(false);
+//                    setNewImages(this,images);
+//                    isFavourites = true;
+//                    changeWallpaper.setEnabled(true);
+//                    random.setEnabled(true);
+//                    showToast("images loaded:" + images.size());
+//                }
+//                showLoadingWallpaper(false);
+                break;
+            case  R.id.delete_fav:
+                showLoadingWallpaper(true);
+                SaveData.getInstance().deleteSharedPref(this);
+//                if (isFavourites){
+//                    images.clear();
+//                }
+                showToast("Favourites deleted");
+                showLoadingWallpaper(false);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void loadFavourites(final Context context){
+        new Thread(new Runnable() {
+            public void run() {
+                showLoadingWallpaper(true);
                 ArrayList temp;
                 temp = images;
-                images = SaveData.getInstance().loadImageFromStorage(favPath,this);
+                images.clear();
+                images = SaveData.getInstance().loadImageFromStorage(favPath,context);
                 if (images.isEmpty()) {
                     showToast("No favourite images.");
                     images = temp;
                 }
                 else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setNewImages(context,images);
+                            anotherOne.setEnabled(false);
+                            changeWallpaper.setEnabled(true);
+                            random.setEnabled(true);
+                        }
+                    });
                     isFavourites = true;
-                    imgview.setImageBitmap(images.get(0));
-                    changeWallpaper.setEnabled(true);
-                    random.setEnabled(true);
                     showToast("images loaded:" + images.size());
                 }
-                break;
-            case  R.id.delete_fav:
-                SaveData.getInstance().deleteSharedPref(this);
-                if (isFavourites){
-                    imgview.setImageResource(android.R.color.transparent);
-                    images.clear();
-                }
-                showToast("Favourites deleted");
+                showLoadingWallpaper(false);
+            }
+        }).start();
 
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -215,6 +249,16 @@ public class MainActivity extends AppCompatActivity {
         sub.onEditorAction(EditorInfo.IME_ACTION_DONE);
     }
 
+    public void setNewImages(Context context,ArrayList<Bitmap> images){
+        imagesShown.clear();
+        for (Bitmap img : images){
+            imagesShown.add(Bitmap.createScaledBitmap(img,(int)(img.getWidth()*0.6), (int)(img.getHeight()*0.6), true));
+        }
+        MyAdapter myAdapter = new MyAdapter(context,imagesShown);
+        viewPager.setAdapter(myAdapter);
+
+    }
+
 
 
     public void showToast(final String text){
@@ -226,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void showLoadingWallpaper(final String text,final boolean show){
+    public void showLoadingWallpaper(final boolean show){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -246,8 +290,10 @@ public class MainActivity extends AppCompatActivity {
         Thread alpha = new Thread(new Runnable() {
             @Override
             public void run() {
-                SaveData.getInstance().saveToInternalStorage(currentWallpaper,cw,cntxt);
+                showLoadingWallpaper(true);
+                SaveData.getInstance().saveToInternalStorage(images.get(viewPager.getRealItem()),cw,cntxt);
                 showToast("Saved");
+                showLoadingWallpaper(false);
             }
         });
         alpha.start();
@@ -284,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            showLoadingWallpaper("Downloading data...",true);
+            showLoadingWallpaper(true);
         }
 
         @Override
@@ -294,20 +340,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            showLoadingWallpaper("Downloading data...",false);
+            imagesShown.clear();
+            showLoadingWallpaper(false);
             if ((images.isEmpty())){
                 showToast("Invalid subreddit");
                 return;
-            }
-            for (Bitmap img : images){
-                imagesShown.add(Bitmap.createScaledBitmap(img,(int)(img.getWidth()*0.8), (int)(img.getHeight()*0.8), true));
             }
             changeWallpaper.setEnabled(true);
             random.setEnabled(true);
             anotherOne.setEnabled(true);
             showToast("Images loaded successfully");
-            MyAdapter myAdapter = new MyAdapter(mContext,imagesShown);
-            viewPager.setAdapter(myAdapter);
+            setNewImages(mContext,images);
             currentWallpaper = images.get(0);
         }
     }
