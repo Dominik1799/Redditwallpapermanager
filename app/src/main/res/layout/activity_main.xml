@@ -17,17 +17,18 @@
 
     <Button
         android:id="@+id/anotherOne"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="106dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rectanglebutton"
+        android:backgroundTint="#5A595B"
+        android:drawableStart="@android:drawable/stat_sys_download"
         android:enabled="false"
         android:onClick="onSaveToInternalStorageClick"
         android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="@+id/changeWallpaper"
-        app:layout_constraintEnd_toStartOf="@+id/changeWallpaper"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/changeWallpaper" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <EditText
         android:id="@+id/subreddit"
@@ -35,14 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="16dp"
-        android:ems="10"
         android:backgroundTint="@color/colorPrimary"
+        android:ems="10"
         android:hint="@string/VerticalWallpapers"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/check"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView2"
@@ -102,7 +102,8 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="24dp"
         android:indeterminateTint="@color/colorPrimary"
         android:indeterminateTintMode="src_in"
         android:visibility="invisible"
@@ -111,31 +112,40 @@
 
     <Button
         android:id="@+id/changeWallpaper"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="2dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/roundedbutton"
         android:backgroundTint="#F44336"
         android:enabled="false"
         android:onClick="onSetWallpaperClick"
         android:text="@string/set"
-        app:layout_constraintBaseline_toBaselineOf="@+id/random"
-        app:layout_constraintEnd_toStartOf="@+id/random"
-        app:layout_constraintStart_toEndOf="@+id/anotherOne" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/anotherOne"
+        app:layout_constraintTop_toBottomOf="@+id/view_pager"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/random"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="9dp"
+        android:layout_width="106dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rectanglebutton"
+        android:backgroundTint="#545355"
+        android:drawableStart="@drawable/ic_shuffle_black_24dp"
+        android:drawableTint="#F9F9F9"
         android:enabled="false"
         android:onClick="onSetRandomWallpaperClick"
         android:text="@string/random"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toEndOf="@+id/changeWallpaper"
-        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintVertical_bias="0.757" />
 
 </android.support.constraint.ConstraintLayout>
