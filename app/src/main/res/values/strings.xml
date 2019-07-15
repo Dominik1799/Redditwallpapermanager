@@ -6,7 +6,7 @@
     <string name="vertical_images_only">Vertical images only</string>
     <string name="load">Load</string>
     <string name="subreddit">Subreddit:</string>
-    <string name="save">Save</string>
+    <string name="save">Favourites</string>
     <string name="set">Set</string>
     <string name="random">random</string>
 </resources>
