@@ -26,6 +26,7 @@
         android:drawableStart="@drawable/ic_star_black_24dp"
         android:enabled="false"
         android:onClick="onSaveToInternalStorageClick"
+        android:paddingStart="5dp"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/progressBar" />
@@ -110,21 +111,40 @@
         app:layout_constraintBottom_toTopOf="@+id/changeWallpaper"
         app:layout_constraintStart_toStartOf="@+id/changeWallpaper" />
 
-    <Button
+    <!--<Button-->
+        <!--android:id="@+id/changeWallpaper"-->
+        <!--android:layout_width="65dp"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@drawable/roundedbutton"-->
+        <!--android:backgroundTint="#F44336"-->
+        <!--android:enabled="false"-->
+        <!--android:onClick="onSetWallpaperClick"-->
+        <!--android:text="@string/set"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/view_pager"-->
+        <!--app:layout_constraintStart_toStartOf="parent" />-->
+
+    <ImageButton
         android:id="@+id/changeWallpaper"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/roundedbutton"
         android:backgroundTint="#F44336"
+        android:clickable="false"
+        android:contentDescription="@string/set"
         android:enabled="false"
         android:onClick="onSetWallpaperClick"
-        android:text="@string/set"
+        android:src="@drawable/myselector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view_pager"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/ic_done_black_24dp" />
 
     <Button
         android:id="@+id/random"
@@ -138,8 +158,10 @@
         android:drawableTint="#F9F9F9"
         android:enabled="false"
         android:onClick="onSetRandomWallpaperClick"
+        android:paddingStart="5dp"
         android:text="@string/random"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/progressBar" />
+
 
 </android.support.constraint.ConstraintLayout>

@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Bitmap> imagesShown = new ArrayList<Bitmap>();
     private String subreddit = "https://www.reddit.com/r/verticalwallpapers/.rss";
     private ProgressBar progressBar;
-    private Button changeWallpaper;
+    private ImageButton changeWallpaper;
     private Button anotherOne;
     private Button random;
     private ImageView imgview;
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         imgview = findViewById(R.id.imageItem);
         changeWallpaper = findViewById(R.id.changeWallpaper);
+        changeWallpaper.setClickable(false);
+        changeWallpaper.setEnabled(false);
         anotherOne = findViewById(R.id.anotherOne);
         random = findViewById(R.id.random);
         sub = findViewById(R.id.subreddit);
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 //                    anotherOne.setEnabled(false);
 //                    setNewImages(this,images);
 //                    isFavourites = true;
-//                    changeWallpaper.setEnabled(true);
+//                    changeWallpaper.setClickable(true);
 //                    random.setEnabled(true);
 //                    showToast("images loaded:" + images.size());
 //                }
@@ -196,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             setNewImages(context,images);
                             anotherOne.setEnabled(false);
-                            changeWallpaper.setEnabled(true);
+                            changeWallpaper.setClickable(true);
                             random.setEnabled(true);
                         }
                     });
@@ -235,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
             if (images.isEmpty()) showToast("Something went wrong :(");
             else{
                 imgview.setImageBitmap(images.get(0));
+                changeWallpaper.setClickable(true);
                 changeWallpaper.setEnabled(true);
                 random.setEnabled(true);
                 showToast("images loaded:" + images.size());
@@ -346,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 showToast("Invalid subreddit");
                 return;
             }
+            changeWallpaper.setClickable(true);
             changeWallpaper.setEnabled(true);
             random.setEnabled(true);
             anotherOne.setEnabled(true);
