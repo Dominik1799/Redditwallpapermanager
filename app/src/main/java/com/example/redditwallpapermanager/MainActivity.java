@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgview;
     private CheckBox VerticalImages;
     private EditText sub;
+    private TextView guide;
     private Context cntxt = this;
     private ContextWrapper cw;
     private Boolean isFavourites = false;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         cw = new ContextWrapper(getApplicationContext());
         favPath = cw.getDir("imageDir",MODE_PRIVATE).getAbsolutePath();
         viewPager = findViewById(R.id.view_pager);
+        guide = findViewById(R.id.guide);
 //        MyAdapter myAdapter = new MyAdapter(this,images);
 //        viewPager.setAdapter(myAdapter);
 //        registerForContextMenu(imgview);
@@ -170,9 +173,14 @@ public class MainActivity extends AppCompatActivity {
             case  R.id.delete_fav:
                 showLoadingWallpaper(true);
                 SaveData.getInstance().deleteSharedPref(this);
-//                if (isFavourites){
-//                    images.clear();
-//                }
+                if (isFavourites){
+                    images.clear();
+                    guide.setVisibility(View.VISIBLE);
+                    viewPager.setVisibility(View.INVISIBLE);
+                    changeWallpaper.setClickable(false);
+                    changeWallpaper.setEnabled(false);
+                    random.setEnabled(false);
+                }
                 showToast("Favourites deleted");
                 showLoadingWallpaper(false);
                 break;
@@ -209,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 showLoadingWallpaper(false);
             }
         }).start();
-
+        guide.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -357,6 +365,8 @@ public class MainActivity extends AppCompatActivity {
             showToast("Images loaded successfully");
             setNewImages(mContext,images);
             currentWallpaper = images.get(0);
+            guide.setVisibility(View.INVISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
         }
     }
 
