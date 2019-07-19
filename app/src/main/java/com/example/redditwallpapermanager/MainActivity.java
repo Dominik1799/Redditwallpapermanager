@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
         if (images.isEmpty()) return;
         currentWallpaper = images.get(viewPager.getRealItem());
         System.out.println("ajjjjjj");
+//        viewPager.setVisibility(View.INVISIBLE);
     }
 
     @SuppressLint("ResourceType")
