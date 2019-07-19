@@ -9,22 +9,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends PagerAdapter {
     Context context;
     ArrayList<Bitmap> images;
+    ArrayList<String> links;
 
-    public MyAdapter(Context context, ArrayList<Bitmap> list){
+    public MyAdapter(Context context, ArrayList<Bitmap> list,ArrayList<String> links){
         this.context = context;
         this.images = list;
+        this.links = links;
     }
 
     @Override
     public int getCount() {
-
-        return images.size();
+//        return images.size();
+        return links.size();
     }
 
     @Override
@@ -42,7 +46,8 @@ public class MyAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_card,container,false);
         ImageView imageView = view.findViewById(R.id.imageItem);
-        imageView.setImageBitmap(images.get(position));
+//        imageView.setImageBitmap(images.get(position));
+        Picasso.get().load(links.get(position)).into(imageView);
         container.addView(view);
         return view;
     }
