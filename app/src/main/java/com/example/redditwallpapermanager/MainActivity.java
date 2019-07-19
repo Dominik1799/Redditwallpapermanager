@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         for (Bitmap img : images){
             imagesShown.add(Bitmap.createScaledBitmap(img,(int)(img.getWidth()*0.6), (int)(img.getHeight()*0.6), true));
         }
-        MyAdapter myAdapter = new MyAdapter(context,imagesShown);
+        MyAdapter myAdapter = new MyAdapter(context,imagesShown,urls);
         viewPager.setAdapter(myAdapter);
 
     }
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Integer... integers) {
             try {
                 urls = ParseContent.getInstance().createLinks(subreddit);
-                images = ParseContent.getInstance().getBitmaps(mContext,urls,VerticalImages.isChecked());
+//                images = ParseContent.getInstance().getBitmaps(mContext,urls,VerticalImages.isChecked());
 
             } catch (Exception e) {
                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa");
@@ -354,17 +354,17 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             imagesShown.clear();
             showLoadingWallpaper(false);
-            if ((images.isEmpty())){
-                showToast("Invalid subreddit");
-                return;
-            }
+//            if ((images.isEmpty())){
+//                showToast("Invalid subreddit");
+//                return;
+//            }
             changeWallpaper.setClickable(true);
             changeWallpaper.setEnabled(true);
             random.setEnabled(true);
             anotherOne.setEnabled(true);
             showToast("Images loaded successfully");
             setNewImages(mContext,images);
-            currentWallpaper = images.get(0);
+//            currentWallpaper = images.get(0);
             guide.setVisibility(View.INVISIBLE);
             viewPager.setVisibility(View.VISIBLE);
         }

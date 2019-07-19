@@ -65,7 +65,7 @@ public class ParseContent {
         for (String url : urls){
             i++;
             try {
-                btmp = Picasso.with(context).load(url).get();
+                btmp = Picasso.get().load(url).get();
                 if (onlyVertical){
                     if (btmp.getWidth() > btmp.getHeight()) continue;
                 }
