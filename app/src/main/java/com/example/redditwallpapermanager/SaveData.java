@@ -5,20 +5,15 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -37,9 +32,15 @@ public class SaveData {
     }
 
 
-    public String saveToInternalStorage(Bitmap bitmapImage, ContextWrapper cw,Context cntxt){
+    public String saveToInternalStorage(String link, ContextWrapper cw,Context cntxt){
         // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        Bitmap bitmapImage = null;
+        try {
+            bitmapImage = Picasso.get().load(link).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File directory = cw.getDir("imageDir", MODE_PRIVATE);
         // Create imageDir
         Integer imageNum;
         imageNum = retrieveImageCount(cntxt);
@@ -79,6 +80,40 @@ public class SaveData {
             }
         }
         return favourites;
+    }
+
+    public String saveFile(String link, ContextWrapper cw, Context cntxt){
+        // path to /data/data/yourapp/app_data/imageDir
+        Bitmap bitmapImage = null;
+        try {
+            bitmapImage = Picasso.get().load(link).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"wallpaper" + ".png");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+
+    }
+
+    public File getFile(String path){
+        File f = new File(path, "wallpaper" + ".png");
+        return f;
     }
 
 

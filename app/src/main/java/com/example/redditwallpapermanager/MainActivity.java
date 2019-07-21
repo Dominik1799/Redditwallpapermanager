@@ -127,21 +127,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSetWallpaperClick(View view){
-        Thread alpha = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
-                try {
-                    showLoadingWallpaper(true);
-                    mngr.setBitmap(images.get(viewPager.getRealItem()));
-                    showToast("Wallpaper set!");
-                    showLoadingWallpaper(false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        alpha.start();
+//        Thread alpha = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
+//                try {
+//                    showLoadingWallpaper(true);
+//                    mngr.setBitmap(images.get(viewPager.getRealItem()));
+//                    showToast("Wallpaper set!");
+//                    showLoadingWallpaper(false);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//        alpha.start();
     }
 
 
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 showLoadingWallpaper(true);
-                SaveData.getInstance().saveToInternalStorage(images.get(viewPager.getRealItem()),cw,cntxt);
+                SaveData.getInstance().saveToInternalStorage(urls.get(viewPager.getRealItem()),cw,cntxt);
                 showToast("Saved");
                 showLoadingWallpaper(false);
             }
@@ -312,7 +312,16 @@ public class MainActivity extends AppCompatActivity {
         alpha.start();
     }
 
+    public void fuck(View view){
 
+        Thread alpha = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HelpingTasks.getInstance().setAs(urls.get(viewPager.getRealItem()),cntxt,cw,favPath);
+            }
+        });
+        alpha.start();
+    }
 
 
 
