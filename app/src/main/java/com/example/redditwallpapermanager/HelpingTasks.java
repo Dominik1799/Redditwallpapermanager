@@ -35,22 +35,15 @@ public class HelpingTasks {
     }
 
     public void setAs(String link, Context context, ContextWrapper contextWrapper,String favPath) {
-
-       SaveData.getInstance().saveFile(link,contextWrapper,context);
-       File f = SaveData.getInstance().getFile(favPath);
-        try {
-            Bitmap btmp = BitmapFactory.decodeStream(new FileInputStream(f));
-            System.out.println("a");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", f);
+       String path = SaveData.getInstance().saveFile(link,contextWrapper,context);
+       Uri uri = Uri.parse(path);
        Intent i=new Intent(Intent.ACTION_ATTACH_DATA);
        i.addCategory(Intent.CATEGORY_DEFAULT);
        i.setDataAndType(uri, "image/*");
        i.putExtra("mimeType", "image/*");
        i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
        context.startActivity(Intent.createChooser(i, "Set as:"));
+//       context.getContentResolver().delete(uri,null,null);
     }
 
 }

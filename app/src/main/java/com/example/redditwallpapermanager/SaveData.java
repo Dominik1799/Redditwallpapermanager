@@ -5,9 +5,12 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -90,26 +93,14 @@ public class SaveData {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath=new File(directory,"wallpaper" + ".png");
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
 
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(cntxt.getContentResolver(), bitmapImage, "current wallpaper", "nice");
+//        cntxt.getContentResolver().delete(Uri.parse(path),null,null);
+        return path;
     }
+
 
     public File getFile(String path){
         File f = new File(path, "wallpaper" + ".png");
