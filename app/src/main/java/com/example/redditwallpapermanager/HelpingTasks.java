@@ -34,16 +34,17 @@ public class HelpingTasks {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void setAs(String link, Context context, ContextWrapper contextWrapper,String favPath) {
-       String path = SaveData.getInstance().saveFile(link,contextWrapper,context);
-       Uri uri = Uri.parse(path);
-       Intent i=new Intent(Intent.ACTION_ATTACH_DATA);
-       i.addCategory(Intent.CATEGORY_DEFAULT);
-       i.setDataAndType(uri, "image/*");
-       i.putExtra("mimeType", "image/*");
-       i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-       context.startActivity(Intent.createChooser(i, "Set as:"));
-//       context.getContentResolver().delete(uri,null,null);
-    }
+//    public void setAs(String link, Context context, String favPath) {
+//       String path = SaveData.getInstance().saveFile(link,contextWrapper,context);
+//       Uri uri = Uri.parse(path);
+//       Intent i=new Intent(Intent.ACTION_ATTACH_DATA);
+//       i.addCategory(Intent.CATEGORY_DEFAULT);
+//       i.setDataAndType(uri, "image/*");
+//       i.putExtra("mimeType", "image/*");
+//       i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//       context.startActivity(Intent.createChooser(i, "Set as:"));
+////       context.getContentResolver().delete(uri,null,null);
+//    }
+
 
 }

@@ -5,9 +5,12 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private Context cntxt = this;
     private ContextWrapper cw;
     private Boolean isFavourites = false;
-    private Bitmap currentWallpaper;
+    private Uri currentWallpaper;
     private String favPath;
     private Activity activity = null;
 
@@ -105,25 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onSetRandomWallpaperClick(final View view){
-        final int randomNum = new Random().nextInt(images.size());
-        currentWallpaper = images.get(randomNum);
+        final int randomNum = new Random().nextInt(urls.size());
         viewPager.setCurrentItem(randomNum,false);
-        Thread alpha = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                WallpaperManager mngr = WallpaperManager.getInstance(cntxt);
-                try {
-                    showLoadingWallpaper(true);
-                    mngr.setBitmap(images.get(randomNum));
-                    mngr.setWallpaperOffsets(view.getWindowToken(),0.5f,0.5f);
-                    showToast("Wallpaper set!");
-                    showLoadingWallpaper(false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        alpha.start();
+        changeWallpaper(urls.get(randomNum));
     }
 
     public void onSetWallpaperClick(View view){
@@ -142,6 +129,28 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //        alpha.start();
+        changeWallpaper(urls.get(viewPager.getRealItem()));
+
+    }
+
+    public void changeWallpaper(final String imageURL){
+        Thread alpha = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                showLoadingWallpaper(true);
+                String path = SaveData.getInstance().saveFile(imageURL,cntxt);
+                Uri uri = Uri.parse(path);
+                currentWallpaper = uri;
+                Intent i=new Intent(Intent.ACTION_ATTACH_DATA);
+                i.addCategory(Intent.CATEGORY_DEFAULT);
+                i.setDataAndType(uri, "image/*");
+                i.putExtra("mimeType", "image/*");
+                i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                showLoadingWallpaper(false);
+                startActivityForResult(Intent.createChooser(i, "Set as:"),1);
+            }
+        });
+        alpha.start();
     }
 
 
@@ -217,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 showLoadingWallpaper(false);
             }
         }).start();
+        setNewImages(this,images);
         guide.setVisibility(View.INVISIBLE);
     }
 
@@ -228,10 +238,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onImageViewClick(View view){
-        if (images.isEmpty()) return;
-        currentWallpaper = images.get(viewPager.getRealItem());
-        System.out.println("ajjjjjj");
-//        viewPager.setVisibility(View.INVISIBLE);
+//        if (images.isEmpty()) return;
+//        currentWallpaper = images.get(viewPager.getRealItem());
+//        System.out.println("ajjjjjj");
+////        viewPager.setVisibility(View.INVISIBLE);
     }
 
     @SuppressLint("ResourceType")
@@ -312,21 +322,18 @@ public class MainActivity extends AppCompatActivity {
         alpha.start();
     }
 
-    public void fuck(View view){
 
-        Thread alpha = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HelpingTasks.getInstance().setAs(urls.get(viewPager.getRealItem()),cntxt,cw,favPath);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1) {
+            this.getContentResolver().delete(currentWallpaper,null,null);
+            if (resultCode == RESULT_OK) {
+                showToast("Succes!");
             }
-        });
-        alpha.start();
+
+        }
+
     }
-
-
-
-
-
 
     class MyTask extends AsyncTask<Integer, Integer, String> {
 

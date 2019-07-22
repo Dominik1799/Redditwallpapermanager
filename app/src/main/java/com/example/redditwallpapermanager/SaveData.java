@@ -85,7 +85,7 @@ public class SaveData {
         return favourites;
     }
 
-    public String saveFile(String link, ContextWrapper cw, Context cntxt){
+    public String saveFile(String link,  Context context){
         // path to /data/data/yourapp/app_data/imageDir
         Bitmap bitmapImage = null;
         try {
@@ -96,7 +96,7 @@ public class SaveData {
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(cntxt.getContentResolver(), bitmapImage, "current wallpaper", "nice");
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmapImage, "current wallpaper", "nice");
 //        cntxt.getContentResolver().delete(Uri.parse(path),null,null);
         return path;
     }

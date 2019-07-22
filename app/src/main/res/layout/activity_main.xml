@@ -151,7 +151,7 @@
         android:clickable="false"
         android:contentDescription="@string/set"
         android:enabled="false"
-        android:onClick="fuck"
+        android:onClick="onSetWallpaperClick"
         android:src="@drawable/myselector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view_pager"
