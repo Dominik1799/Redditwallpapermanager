@@ -34,6 +34,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     HorizontalInfiniteCycleViewPager viewPager;
     private ArrayList<String> urls = new ArrayList<>();
+    private ArrayList<String> favLinks = new ArrayList<>();
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
     private ArrayList<Bitmap> imagesShown = new ArrayList<Bitmap>();
     private String subreddit = "https://www.reddit.com/r/verticalwallpapers/.rss";
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         favPath = cw.getDir("imageDir",MODE_PRIVATE).getAbsolutePath();
         viewPager = findViewById(R.id.view_pager);
         guide = findViewById(R.id.guide);
+        favLinks = SaveData.getInstance().getFavLinks(this);
     }
 
 
@@ -121,11 +123,13 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.fav:
-                loadFavourites(this);
-                break;
+                subreddit = "fav";
+                isFavourites = true;
+                new MyTask(cntxt).execute();
             case  R.id.delete_fav:
                 showLoadingWallpaper(true);
                 SaveData.getInstance().deleteSharedPref(this);
+                favLinks = SaveData.getInstance().getFavLinks(this);
                 if (isFavourites){
                     images.clear();
                     guide.setVisibility(View.VISIBLE);
@@ -143,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadFavourites(final Context context){
+        setNewImages(context,true);
 //        new Thread(new Runnable() {
 //            public void run() {
 //                showLoadingWallpaper(true);
@@ -212,9 +217,18 @@ public class MainActivity extends AppCompatActivity {
         sub.onEditorAction(EditorInfo.IME_ACTION_DONE);
     }
 
-    public void setNewImages(Context context){
-        MyAdapter myAdapter = new MyAdapter(context,urls);
-        viewPager.setAdapter(myAdapter);
+    public void setNewImages(Context context,Boolean isFavourites){
+        if (isFavourites) {
+            if (favLinks.contains("empty"))
+                favLinks.remove("empty");
+            MyAdapter myAdapter = new MyAdapter(context,favLinks);
+            viewPager.setAdapter(myAdapter);
+            return;
+        } else {
+            MyAdapter myAdapter = new MyAdapter(context,urls);
+            viewPager.setAdapter(myAdapter);
+            return;
+        }
 
     }
 
@@ -246,16 +260,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSaveToInternalStorageClick(View view){
 
-        Thread alpha = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                showLoadingWallpaper(true);
-                SaveData.getInstance().saveToInternalStorage(urls.get(viewPager.getRealItem()),cw,cntxt);
-                showToast("Saved");
-                showLoadingWallpaper(false);
-            }
-        });
-        alpha.start();
+//        Thread alpha = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                showLoadingWallpaper(true);
+//                SaveData.getInstance().saveToInternalStorage(urls.get(viewPager.getRealItem()),cw,cntxt);
+//                showToast("Saved");
+//                showLoadingWallpaper(false);
+//            }
+//        });
+//        alpha.start();
+        favLinks = SaveData.getInstance().getFavLinks(this);
+        favLinks.add(urls.get(viewPager.getRealItem()));
+        SaveData.getInstance().saveFavLinks(this,favLinks);
+        showToast("Image saved");
     }
 
 
@@ -282,7 +300,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Integer... integers) {
             try {
-                urls = ParseContent.getInstance().createLinks(subreddit);
+                if (subreddit.equalsIgnoreCase("fav")){
+                    urls = favLinks;
+                    urls.remove("empty");
+                } else
+                    urls = ParseContent.getInstance().createLinks(subreddit);
 
             } catch (Exception e) {
                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa");
@@ -306,16 +328,22 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             imagesShown.clear();
             showLoadingWallpaper(false);
+            if (urls.isEmpty() && subreddit.equalsIgnoreCase("fav")){
+                showToast("No favourite images.");
+                return;
+            }
             if ((urls.isEmpty())){
                 showToast("Invalid subreddit");
                 return;
             }
+            anotherOne.setEnabled(false);
             changeWallpaper.setClickable(true);
             changeWallpaper.setEnabled(true);
             random.setEnabled(true);
-            anotherOne.setEnabled(true);
-            showToast("Images loaded successfully");
-            setNewImages(mContext);
+            if (!subreddit.equalsIgnoreCase("fav"))
+                anotherOne.setEnabled(true);
+            showToast("Images loaded succesfuly");
+            setNewImages(mContext,false);
 //            currentWallpaper = images.get(0);
             guide.setVisibility(View.INVISIBLE);
             viewPager.setVisibility(View.VISIBLE);

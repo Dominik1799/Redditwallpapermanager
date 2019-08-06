@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -102,11 +103,6 @@ public class SaveData {
     }
 
 
-    public File getFile(String path){
-        File f = new File(path, "wallpaper" + ".png");
-        return f;
-    }
-
 
     public void saveImageCount(Integer num,Context cntxt){
         SharedPreferences sharedPreferences = cntxt.getSharedPreferences("imgCount",MODE_PRIVATE);
@@ -115,7 +111,7 @@ public class SaveData {
         editor.apply();
     }
     public void deleteSharedPref(Context cntxt){
-        SharedPreferences sharedPreferences = cntxt.getSharedPreferences("imgCount",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = cntxt.getSharedPreferences("favLinks",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
@@ -125,6 +121,26 @@ public class SaveData {
         SharedPreferences sharedPreferences = cntxt.getSharedPreferences("imgCount",MODE_PRIVATE);
         return sharedPreferences.getInt("imgNum",1);
     }
+
+    public void saveFavLinks(Context context,ArrayList linksList){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("favLinks",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("links",compressLinks(linksList));
+        editor.apply();
+    }
+    public ArrayList<String> getFavLinks(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("favLinks",MODE_PRIVATE);
+        return new ArrayList<>(Arrays.asList(sharedPreferences.getString("links","empty").split(",")));
+    }
+
+    public String compressLinks(ArrayList<String> linkList){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < linkList.size(); i++) {
+            sb.append(linkList.get(i)).append(",");
+        }
+        return sb.toString();
+    }
+
 
 
 }

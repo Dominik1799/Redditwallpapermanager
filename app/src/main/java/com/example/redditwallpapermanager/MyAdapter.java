@@ -27,6 +27,9 @@ import java.util.List;
 public class MyAdapter extends PagerAdapter {
     Context context;
     ArrayList<String> links;
+    Boolean isFavourites;
+    String favPath;
+    ArrayList<Bitmap> fav;
 
     public MyAdapter(Context context,ArrayList<String> links){
         this.context = context;
@@ -74,5 +77,14 @@ public class MyAdapter extends PagerAdapter {
         .into(imageView);
         container.addView(view);
         return view;
+    }
+
+    public void getFav(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                fav = SaveData.getInstance().loadImageFromStorage(favPath,context);
+            }
+        }).start();
     }
 }

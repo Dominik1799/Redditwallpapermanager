@@ -9,4 +9,6 @@
     <string name="save">Save</string>
     <string name="set">Set</string>
     <string name="random">random</string>
+    <string name="image_loading">Image loading...</string>
+    <string name="enter_your_favourite_subreddit_and_tap_load">Enter your favourite subreddit and tap load!</string>
 </resources>

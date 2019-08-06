@@ -83,7 +83,7 @@
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Enter your favourite subreddit and tap load!"
+        android:text="@string/enter_your_favourite_subreddit_and_tap_load"
         app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="@+id/view_pager"
         app:layout_constraintStart_toStartOf="@+id/view_pager"
