@@ -123,9 +123,15 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.fav:
+                if (favLinks.isEmpty() || (favLinks.size() == 1 && favLinks.contains("empty"))){
+                    showToast("No favourite images.");
+                    break;
+                }
                 subreddit = "fav";
                 isFavourites = true;
+                urls = favLinks;
                 new MyTask(cntxt).execute();
+                break;
             case  R.id.delete_fav:
                 showLoadingWallpaper(true);
                 SaveData.getInstance().deleteSharedPref(this);
@@ -146,39 +152,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadFavourites(final Context context){
-        setNewImages(context,true);
-//        new Thread(new Runnable() {
-//            public void run() {
-//                showLoadingWallpaper(true);
-//                ArrayList temp;
-//                temp = images;
-//                images.clear();
-//                images = SaveData.getInstance().loadImageFromStorage(favPath,context);
-//                if (images.isEmpty()) {
-//                    showToast("No favourite images.");
-//                    images = temp;
-//                }
-//                else{
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            setNewImages(context,images);
-//                            anotherOne.setEnabled(false);
-//                            changeWallpaper.setClickable(true);
-//                            random.setEnabled(true);
-//                        }
-//                    });
-//                    isFavourites = true;
-//                    showToast("images loaded:" + images.size());
-//                }
-//                showLoadingWallpaper(false);
-//            }
-//        }).start();
-//        setNewImages(this,images);
-//        guide.setVisibility(View.INVISIBLE);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -191,26 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     public void onLoadClick(View view){
-//        if (!urls.isEmpty()) urls.clear();
         isFavourites = false;
         if (!ParseContent.getInstance().isNetworkAvailable(this)){
             showToast("No connection");
             return;
         }
-        if (sub.getText().toString().equalsIgnoreCase("fav")){
-            images = SaveData.getInstance().loadImageFromStorage(favPath,this);
-            if (images.isEmpty()) showToast("Something went wrong :(");
-            else{
-                imgview.setImageBitmap(images.get(0));
-                changeWallpaper.setClickable(true);
-                changeWallpaper.setEnabled(true);
-                random.setEnabled(true);
-                showToast("images loaded:" + images.size());
-                sub.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                return;
-            }
-        }
-
         subreddit = "https://www.reddit.com/r/" + sub.getText() + "/.rss";
         if (sub.getText().toString().matches("")) subreddit = "https://www.reddit.com/r/verticalwallpapers/.rss";
         new MyTask(cntxt).execute();
@@ -259,17 +217,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onSaveToInternalStorageClick(View view){
-
-//        Thread alpha = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                showLoadingWallpaper(true);
-//                SaveData.getInstance().saveToInternalStorage(urls.get(viewPager.getRealItem()),cw,cntxt);
-//                showToast("Saved");
-//                showLoadingWallpaper(false);
-//            }
-//        });
-//        alpha.start();
         favLinks = SaveData.getInstance().getFavLinks(this);
         favLinks.add(urls.get(viewPager.getRealItem()));
         SaveData.getInstance().saveFavLinks(this,favLinks);
@@ -301,13 +248,12 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Integer... integers) {
             try {
                 if (subreddit.equalsIgnoreCase("fav")){
-                    urls = favLinks;
                     urls.remove("empty");
+                    return null;
                 } else
                     urls = ParseContent.getInstance().createLinks(subreddit);
 
             } catch (Exception e) {
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa");
                 e.printStackTrace();
                 return null;
             }
@@ -321,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-
+            
         }
 
         @Override
@@ -344,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
                 anotherOne.setEnabled(true);
             showToast("Images loaded succesfuly");
             setNewImages(mContext,false);
-//            currentWallpaper = images.get(0);
             guide.setVisibility(View.INVISIBLE);
             viewPager.setVisibility(View.VISIBLE);
         }

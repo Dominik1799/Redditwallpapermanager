@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/transparent" />
+        app:srcCompat="@color/colorAccent"
+        tools:srcCompat="@color/colorAccent" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
